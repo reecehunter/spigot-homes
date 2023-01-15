@@ -12,10 +12,10 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HomeFiles {
 
-    HomeFiles plugin;
+    HomesPlugin plugin;
     File homeFile;
 
-    public TestConfig(HomeFiles plugin, String name) {
+    public TestConfig(HomesPlugin plugin, String name) {
         this.plugin = plugin;
         
         // Specify the file name in the main class
