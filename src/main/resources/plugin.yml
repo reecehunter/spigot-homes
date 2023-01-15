@@ -1,0 +1,21 @@
+name: Homes
+version: '${project.version}'
+main: net.bosshub.homes.HomesPlugin
+api-version: 1.19
+
+commands:
+  home:
+    description: Teleport to one of your homes.
+  homes:
+    description: View and edit your homes.
+  sethome:
+    description: Set a home.
+  removehome:
+    description: Removes a home.
+    aliases: [deletehome, delhome, remhome]
+
+permissions:
+  homes.use:
+    description: Set, delete, and list homes.
+  homes.limit:
+    description: Amount of homes a player is allowed to set.
