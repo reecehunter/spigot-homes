@@ -3,6 +3,9 @@ version: '${project.version}'
 main: net.bosshub.homes.HomesPlugin
 api-version: 1.19
 
+load: POSTWORLD
+depend: [Multiverse-Core]
+
 commands:
   home:
     description: Teleport to one of your homes.

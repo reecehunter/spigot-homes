@@ -24,13 +24,14 @@ public class HomeListInventory implements Listener {
     private final HomesPlugin plugin;
 
     public Inventory inv;
+    private String invName = "                 Homes";
 
     public HomeListInventory(HomesPlugin plugin) {
         // Get main class
         this.plugin = plugin;
 
         // Create a new inventory, with no owner (as this isn't a real inventory), a size of nine, called example
-        inv = Bukkit.createInventory(null, 27, "                 Homes");
+        inv = Bukkit.createInventory(null, 27, invName);
     }
 
     public void initializeItems(UUID uuid) {
@@ -38,7 +39,7 @@ public class HomeListInventory implements Listener {
         Set<String> homeNames = plugin.getFiles().getAllHomeNames(uuid);
 
         for(String name : homeNames) {
-            inv.addItem(createGuiItem(Material.LIME_DYE , "§a§l"+name, "§fLeft click to teleport"));
+            inv.addItem(createGuiItem(Material.LIME_DYE , "§a§n§l"+name, "§fLeft click to teleport"));
         }
 
         int homeLimit = 0;
@@ -82,7 +83,7 @@ public class HomeListInventory implements Listener {
     // Check for clicks on items
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {
-        if(e.getInventory().getHolder() != null) return;
+        if(!e.getView().getTitle().equals(invName)) return;
 
         e.setCancelled(true);
 
@@ -99,8 +100,8 @@ public class HomeListInventory implements Listener {
 
         // Teleport the player
         String itemName = clickedItem.getItemMeta().getDisplayName();
-        if(itemName.contains("§a§l")) {
-            player.performCommand("home " + itemName.replace("§a§l", ""));
+        if(itemName.contains("§a§l§n")) {
+            player.performCommand("home " + itemName.replace("§a§l§n", ""));
             player.closeInventory();
         }
     }

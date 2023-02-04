@@ -2,10 +2,13 @@ package net.bosshub.homes;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -20,6 +23,7 @@ public class HomeFiles {
         File homeFile = new File(plugin.getDataFolder(), "homes.yml");
 
         if(homeFile.exists()) {
+            Bukkit.getLogger().info(Bukkit.getWorlds().toString());
             YamlConfiguration homeConfig = YamlConfiguration.loadConfiguration(homeFile);
 
             for(String s : homeConfig.getKeys(false)) {
@@ -93,7 +97,6 @@ public class HomeFiles {
 
         YamlConfiguration homeConfig = YamlConfiguration.loadConfiguration(homeFile);
 
-        Bukkit.getLogger().info("HOMEFILES: " + homeConfig.getConfigurationSection(uuid.toString()).get(name));
         return (Location) homeConfig.getConfigurationSection(uuid.toString()).get(name);
 
     }
@@ -111,7 +114,11 @@ public class HomeFiles {
 
         YamlConfiguration homeConfig = YamlConfiguration.loadConfiguration(homeFile);
 
-        return homeConfig.getConfigurationSection(uuid.toString()).getKeys(false);
+        ConfigurationSection section = homeConfig.getConfigurationSection(uuid.toString());
+
+        if(section == null) { return new HashSet<>(); }
+
+        return section.getKeys(false);
 
     }
 

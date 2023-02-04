@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class HomeCommand implements CommandExecutor {
+
     private final HomesPlugin plugin;
 
     private final ChatColor ccGood = ChatColor.GREEN;
@@ -35,33 +36,40 @@ public class HomeCommand implements CommandExecutor {
 
                     UUID uuid = player.getUniqueId();
 
-                    Location location = player.getLocation();
-
                     if (!plugin.hasHome(uuid)) {
-                        player.sendMessage(ccBad + "You do not have a home! Set one with /sethome");
+                        player.sendMessage(ccBad + "You do not have any homes! Set one with /sethome");
                     } else {
-                        plugin.addQueue(uuid);
 
-                        new BukkitRunnable() {
-                            int delay = 5;
+                        if(plugin.getFiles().getAllHomeNames(uuid).contains(args[0])) {
 
-                            @Override
-                            public void run() {
-                                if (plugin.isQueued(uuid)) {
-                                    if (delay <= 0) {
-                                        player.teleport(plugin.getFiles().getHome(uuid, args[0]));
-                                        player.sendMessage(ccGood + "You teleported to your home.");
-                                        plugin.cancelQueue(uuid);
-                                        this.cancel();
+                            plugin.addQueue(uuid);
+
+                            new BukkitRunnable() {
+                                int delay = 5;
+
+                                @Override
+                                public void run() {
+                                    if (plugin.isQueued(uuid)) {
+                                        if (delay <= 0) {
+                                            player.teleport(plugin.getFiles().getHome(uuid, args[0]));
+                                            player.sendMessage(ccGood + "You teleported to your home.");
+                                            plugin.cancelQueue(uuid);
+                                            this.cancel();
+                                        } else {
+                                            player.sendMessage(ccGood + "Teleport home in " + delay-- + " seconds.");
+                                        }
                                     } else {
-                                        player.sendMessage(ccGood + "Teleport home in " + delay-- + " seconds.");
+                                        player.sendMessage(ccBad + "Your teleport has been cancelled.");
+                                        this.cancel();
                                     }
-                                } else {
-                                    player.sendMessage(ccBad + "Your teleport has been cancelled.");
-                                    this.cancel();
                                 }
-                            }
-                        }.runTaskTimer(plugin, 0, 20);
+                            }.runTaskTimer(plugin, 0, 20);
+
+                        } else {
+                            player.sendMessage(ccBad + "That home doesn't exist.");
+                        }
+
+
                     }
                 } else {
                     player.sendMessage(ccBad + "Usage: /home [name]");

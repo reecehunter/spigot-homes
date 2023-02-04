@@ -1,6 +1,7 @@
 package net.bosshub.homes.commands;
 
 import net.bosshub.homes.HomesPlugin;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,8 +20,6 @@ public class ListHomesCommand implements CommandExecutor, Listener {
         this.plugin = plugin;
     }
 
-    public Inventory gui;
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
@@ -32,9 +31,15 @@ public class ListHomesCommand implements CommandExecutor, Listener {
 
                 UUID uuid = player.getUniqueId();
 
-                plugin.getHomeListInventory().initializeItems(uuid);
 
-                plugin.getHomeListInventory().openInventory(player);
+                if(plugin.getFiles().getAllHomeNames(uuid) == null) {
+                    player.sendMessage(ChatColor.RED + "You don't have any homes.");
+                } else {
+                    plugin.getHomeListInventory().initializeItems(uuid);
+                    plugin.getHomeListInventory().openInventory(player);
+                }
+
+
 
             }
 

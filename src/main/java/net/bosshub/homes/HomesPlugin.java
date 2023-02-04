@@ -8,11 +8,13 @@ import net.bosshub.homes.commands.ListHomesCommand;
 import net.bosshub.homes.commands.SetHomeCommand;
 import net.bosshub.homes.inventories.HomeListInventory;
 import net.bosshub.homes.listeners.PlayerListeners;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public final class HomesPlugin extends JavaPlugin {
 
@@ -30,6 +32,11 @@ public final class HomesPlugin extends JavaPlugin {
         this.queue = new ArrayList<>();
         this.files.init();
 
+        // Set up bstats
+        //int pluginId = 17429;
+        //Metrics metrics = new Metrics(this, pluginId);
+
+        // Check if data folder exists
         if(!getDataFolder().exists()) {
             getDataFolder().mkdir();
         }
@@ -61,8 +68,6 @@ public final class HomesPlugin extends JavaPlugin {
     }
 
     public Location getHome(UUID uuid, String name) {
-        // TODO: Get the specific value (from the multimap array) by its name
-        Bukkit.getLogger().info("[GETHOME DEBUG]: " + this.homes.get(uuid));
         return (Location) this.homes.get(uuid);
     }
 
